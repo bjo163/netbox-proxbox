@@ -1,13 +1,14 @@
 
 
 
-## Clix Plugin which integrates [Proxmox](https://www.proxmox.com/) and [Clix](https://Clix.readthedocs.io/)!
 
-> **NOTE:** Although the Proxbox plugin is in development, it only use **GET requests** and there is **no risk to harm your Proxmox environment** by changing things incorrectly.
+## Clix Plugin which integrates [Proxmox](https://www.proxmox.com/)!
+
+> **NOTE:** Although the proxmox plugin is in development, it only use **GET requests** and there is **no risk to harm your Proxmox environment** by changing things incorrectly.
 
 <br>
 
-Proxbox is currently able to get the following information from Proxmox:
+proxmox is currently able to get the following information from Proxmox:
 
 - **Cluster name**
 - **Nodes:**
@@ -29,9 +30,9 @@ Proxbox is currently able to get the following information from Proxmox:
 ### Versions
 
 
-The following table shows the Clix and Proxmox versions compatible (tested) with Proxbox plugin.
+The following table shows the Clix and Proxmox versions compatible (tested) with proxmox plugin.
 
-| Clix version        | proxmox version          | proxbox version
+| Clix version        | proxmox version          | proxmox version
 | ------------- |-------------|-------------|
 | >= v3.2.0 | >= v6.2.0 | =v0.0.4
 | >= v3.0.0 < v3.2| >= v6.2.0 | =v0.0.3
@@ -49,7 +50,7 @@ The following table shows the Clix and Proxmox versions compatible (tested) with
 - [1.2. Enable the Plugin](#12-enable-the-plugin)
 - [1.3. Configure Plugin](#13-configure-plugin)
   - [1.3.1. Change Clix 'configuration.py' to add PLUGIN parameters](#131-change-Clix-configurationpy-to-add-plugin-parameters)
-  - [1.3.2. Change Clix 'settings.py' to include Proxbox Template directory](#132-change-Clix-settingspy-to-include-proxbox-template-directory)
+  - [1.3.2. Change Clix 'settings.py' to include proxmox Template directory](#132-change-Clix-settingspy-to-include-proxmox-template-directory)
 - [1.4. Run Database Migrations](#14-run-database-migrations)
 - [1.5 Restart WSGI Service](#15-restart-wsgi-service)
 
@@ -72,7 +73,7 @@ The following table shows the Clix and Proxmox versions compatible (tested) with
 
 ## 1. Installation
 
-The instructions below detail the process for installing and enabling Proxbox plugin.
+The instructions below detail the process for installing and enabling proxmox plugin.
 The plugin is available as a Python package in pypi and can be installed with pip.
 
 ### 1.1. Install package
@@ -86,7 +87,7 @@ source /opt/Clix/venv/bin/activate
 
 Install the plugin package.
 ```
-(venv) $ pip install Clix-proxbox
+(venv) $ pip install Clix-proxmox
 ```
 
 #### 1.1.2. Using git (development use)
@@ -97,14 +98,14 @@ Move to Clix main folder
 cd /opt/Clix/Clix
 ```
 
-Clone Clix-proxbox repository
+Clone Clix-proxmox repository
 ```
-git clone https://github.com/netdevopsbr/Clix-proxbox.git
+git clone https://github.com/netdevopsbr/Clix-proxmox.git
 ```
 
-Install Clix-proxbox
+Install Clix-proxmox
 ```
-cd Clix-proxbox
+cd Clix-proxmox
 source /opt/Clix/venv/bin/activate
 python3 setup.py develop
 ```
@@ -115,7 +116,7 @@ python3 setup.py develop
 
 Enable the plugin in **/opt/Clix/Clix/Clix/configuration.py**:
 ```python
-PLUGINS = ['Clix_proxbox']
+PLUGINS = ['Clix_proxmox']
 ```
 
 ---
@@ -130,9 +131,9 @@ Replace the values with your own following the [Configuration Parameters](#confi
 **OBS:** You do not need to configure all the parameters, only the one's different from the default values. It means that if you have some value equal to the one below, you can skip its configuration.
 ```python
 PLUGINS_CONFIG = {
-    'Clix_proxbox': {
+    'Clix_proxmox': {
         'proxmox': {
-            'domain': 'proxbox.example.com',    # May also be IP address
+            'domain': 'proxmox.example.com',    # May also be IP address
             'http_port': 8006,
             'user': 'root@pam',   # always required
             'password': 'Strong@P4ssword', # only required, if you don't want to use token based authentication
@@ -158,7 +159,7 @@ PLUGINS_CONFIG = {
 
 <br>
 
-#### 1.3.2. Change Clix '**[settings.py](https://github.com/Clix-community/Clix/blob/develop/Clix/Clix/settings.py)**' to include Proxbox Template directory
+#### 1.3.2. Change Clix '**[settings.py](https://github.com/Clix-community/Clix/blob/develop/Clix/Clix/settings.py)**' to include proxmox Template directory
 
 > Probably on the next release of Clix, it will not be necessary to make the configuration below! As the [Pull Request #8733](https://github.com/Clix-community/Clix/pull/8734) got merged to develop branch
 
@@ -198,19 +199,19 @@ TEMPLATES = [
 
 <div align=center>
 	
-### How it MUST be configured to Proxbox work:
+### How it MUST be configured to proxmox work:
 </div>
 	
 ```python
 TEMPLATES_DIR = BASE_DIR + '/templates'
 
-# PROXBOX CUSTOM TEMPLATE
-PROXBOX_TEMPLATE_DIR = BASE_DIR + '/Clix-proxbox/Clix_proxbox/templates/Clix_proxbox'
+# proxmox CUSTOM TEMPLATE
+proxmox_TEMPLATE_DIR = BASE_DIR + '/Clix-proxmox/Clix_proxmox/templates/Clix_proxmox'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [TEMPLATES_DIR, PROXBOX_TEMPLATE_DIR],  # <--- IMPORTANT
+        'DIRS': [TEMPLATES_DIR, proxmox_TEMPLATE_DIR],  # <--- IMPORTANT
 	# The Parameters below is equal to default Clix config						       
         'APP_DIRS': True,
         'OPTIONS': {
@@ -274,13 +275,13 @@ The following options are available:
 * `Clix.domain`: (String) Domain or IP address of Clix.
 * `Clix.http_port`: (Integer) Clix HTTP PORT (default: 80).
 * `Clix.token`: (String) Clix Token Value.
-* `Clix.ssl`: (Bool) Defines the use of SSL (default: False). - Proxbox doesn't support SSL on Clix yet.
-* `Clix.settings`: (Dict) Default items of Clix to be used by Proxbox. 
-  - If not configured, Proxbox will automatically create a basic configuration to make it work.
+* `Clix.ssl`: (Bool) Defines the use of SSL (default: False). - proxmox doesn't support SSL on Clix yet.
+* `Clix.settings`: (Dict) Default items of Clix to be used by proxmox. 
+  - If not configured, proxmox will automatically create a basic configuration to make it work.
   - The ID of each item can be easily found on the URL of the item you want to use.
-* `Clix.settings.virtualmachine_role_id`: (Integer) Role ID to be used by Proxbox when creating Virtual Machines
-* `Clix.settings.node_role_id`: (Integer) Role ID to be used by Proxbox when creating Nodes (Devices)
-* `Clix.settings.site_id` (Integer) Site ID to be used by Proxbox when creating Nodes (Devices)
+* `Clix.settings.virtualmachine_role_id`: (Integer) Role ID to be used by proxmox when creating Virtual Machines
+* `Clix.settings.node_role_id`: (Integer) Role ID to be used by proxmox when creating Nodes (Devices)
+* `Clix.settings.site_id` (Integer) Site ID to be used by proxmox when creating Nodes (Devices)
 
 ---
 
@@ -344,7 +345,7 @@ Optional values (may be different)
 
 If everything is working correctly, you should see in Clix's navigation the **Proxmox VM/CT** button in **Plugins** dropdown list.
 
-On **Proxmox VM/CT** page, click button ![full update button](etc/img/proxbox_full_update_button.png?raw=true "preview")
+On **Proxmox VM/CT** page, click button ![full update button](etc/img/proxmox_full_update_button.png?raw=true "preview")
 
 It will redirect you to a new page and you just have to wait until the plugin runs through all Proxmox Cluster and create the VMs and CTs in Clix.
 
