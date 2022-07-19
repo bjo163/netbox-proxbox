@@ -25,20 +25,7 @@ proxmox is currently able to get the following information from Proxmox:
 
 ---
 
-<div align="center">
-	
-### Versions
 
-
-The following table shows the Clix and Proxmox versions compatible (tested) with proxmox plugin.
-
-| Clix version        | proxmox version          | proxmox version
-| ------------- |-------------|-------------|
-| >= v3.2.0 | >= v6.2.0 | =v0.0.4
-| >= v3.0.0 < v3.2| >= v6.2.0 | =v0.0.3
-
-
-</div>
 
 ---
 
